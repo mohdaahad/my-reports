@@ -1,6 +1,6 @@
-# React Login System with Material-UI
+# Medical Report Website (Frontend)
 
-This is a simple React application demonstrating a login system using Material-UI components. The application includes three main pages: Login, Signup, and Forgot Password.
+This is a frontend-only React application for a medical report website. The website aims to provide an interface for users to view and manage their medical reports.
 
 ## Technologies Used
 
@@ -9,9 +9,9 @@ This is a simple React application demonstrating a login system using Material-U
 
 ## Features
 
-- **Login**: Authenticate using email and password.
-- **Signup**: Create a new account with full name, email, and password.
-- **Forgot Password**: Recover password via email.
+- **Dashboard**: Overview of medical reports with filtering options.
+- **Report View**: Detailed view of individual medical reports.
+- **User Profile**: Manage user information and settings.
 
 ## Getting Started
 
@@ -20,13 +20,13 @@ This is a simple React application demonstrating a login system using Material-U
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/react-login-system.git
+    git clone https://github.com/mohdaahad/my-reports.git
     ```
 
 2. Navigate to the project directory:
 
     ```bash
-    cd react-login-system
+    cd my-reports
     ```
 
 3. Install dependencies:
