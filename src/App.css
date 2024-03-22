@@ -1,38 +1,475 @@
-.App {
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: #424242;
+}
+
+.img-fluid {
+  max-width: 100% !important;
+  height: auto;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+/** Login 1 start **/
+
+.login-1 h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: 'Jost', sans-serif;
+}
+
+/** Login 7 start **/
+
+.login-7-inner {
+  position: relative;
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  overflow: hidden;
+  padding: 30px 0;
 }
 
-.App-link {
-  color: #61dafb;
+.login-7-inner:before {
+  content: "";
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: url(./assets/images/img-7.jpg) top left repeat;
+  z-index: 1;
 }
 
-@keyframes App-logo-spin {
+.login-7-bg {
+  background-image: linear-gradient(to bottom, #9143f9, #23067a);
+}
+
+.login-7-inner #particles-js {
+  background-size: cover;
+  background-position: 50% 50%;
+  position: fixed;
+  min-height: 100vh;
+  width: 100%;
+  z-index: 0;
+}
+
+.login-7 h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: 'system-ui', sans-serif;
+}
+
+.login-7 .logo {
+  top: 80px;
+  position: absolute;
+}
+
+.login-7 .logo img {
+  height: 30px;
+}
+
+.login-7 .form-info {
+  background: #fff;
+  border-radius: 0;
+  max-width: 580px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.login-7 .form-section {
+  padding: 160px 80px 60px;
+  border-radius: 10px 0 0 10px;
+  text-align: left;
+  position: relative;
+}
+
+.login-7 label {
+  color: #535353;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.login-7 .form-section p {
+  font-size: 16px;
+  color: #535353;
+}
+
+.login-7 .form-section a {
+  color: #535353;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+/* .login-7 .form-section p {
+  margin-bottom: 30px;
+} */
+
+.login-7 .form-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.login-7 .form-section .social-list li {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.login-7 .form-section .thembo {
+  margin-left: 4px;
+}
+
+.login-7 .form-section h1 {
+  font-size: 27px;
+  font-weight: 600;
+  color: #7878ff;
+}
+
+.login-7 .form-section h3 {
+  margin: 0 0 35px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #040404;
+}
+
+.login-7 .form-section .typing>* {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typingAnim 3s steps(50);
+  text-transform: uppercase;
+}
+
+@keyframes typingAnim {
   from {
-    transform: rotate(0deg);
+      width: 0
   }
   to {
-    transform: rotate(360deg);
+      width: 100%
   }
 }
+
+.login-7 .form-section .form-group {
+  margin-bottom: 25px;
+}
+
+.login-7 .form-section .form-control {
+  padding: 10px 20px;
+  font-size: 16px;
+  outline: none;
+  height: 50px;
+  color: #535353;
+  border-radius: 3px;
+  font-weight: 500;
+  border: 1px solid #d3d3d3 !important;
+}
+
+.login-7 .form-section .checkbox .terms {
+  margin-left: 3px;
+}
+
+.login-7 .form-section .terms {
+  margin-left: 3px;
+}
+
+.login-7 .btn-section {
+  border-radius: 50px;
+  margin-bottom: 0;
+  display: inline-block;
+  top: 80px;
+  position: absolute;
+  right: 90px;
+}
+
+.login-7 .btn-section .link-btn {
+  font-size: 14px;
+  float: left;
+  text-align: center;
+  width: 100px;
+  padding: 6px 5px;
+  margin-left: 5px;
+  color: #535353;
+  border-radius: 3px;
+  background: #fff;
+  border: 1px solid #d3d3d3;
+}
+
+.login-7 .btn-section .active-bg {
+  color: #fff;
+  background: #7878ff;
+  border: 1px solid #7878ff;
+}
+
+.login-7 .btn-section .link-btn:hover {
+  color: #fff;
+  background: #7878ff;
+  border: 1px solid #7878ff;
+}
+
+.login-7 .form-check-input:focus {
+  box-shadow: none;
+}
+
+.login-7 .form-section .form-check-input {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border: 1px solid #d3d3d3;
+  border-radius: 3px;
+  position: absolute;
+  background-color: #fff;
+}
+
+.login-7 .form-check-input:checked {
+  background-color: #7878ff;
+  border: solid #7878ff;
+}
+
+.login-7 .form-section .form-check-label {
+  padding-left: 5px;
+  margin-bottom: 0;
+  font-size: 16px;
+  color: #535353;
+}
+
+.login-7 .btn-theme {
+  color: #fff;
+  text-align: center;
+  border: 2px solid transparent;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  transition: all .7s ease;
+  border-radius: 3px;
+  font-size: 17px;
+  font-weight: 400;
+  font-family: 'Jost', sans-serif;
+}
+
+.login-7 .btn-theme:before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .7s ease;
+  z-index: -1;
+  border-radius: 3px;
+}
+
+.login-7 .btn-theme:after {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .7s ease;
+  z-index: -1;
+}
+
+.login-7 .btn-theme:hover {
+  background: transparent;
+}
+
+.login-7 .btn-theme:hover:before {
+  width: 0;
+  opacity: 1;
+  visibility: visible;
+}
+
+.login-7 .btn-theme:hover:after {
+  width: 0;
+  opacity: 1;
+  visibility: visible;
+}
+
+.login-7 .btn-lg {
+  padding: 0 50px;
+  line-height: 46px;
+}
+
+.login-7 .btn {
+  box-shadow: none !important;
+}
+
+.login-7 .btn-md {
+  padding: 0 45px;
+  line-height: 41px;
+}
+
+.login-7 .btn-primary {
+  background: #7878ff;
+}
+
+.login-7 .btn-primary:before {
+  background: #7878ff;
+}
+
+.login-7 .btn-primary:after {
+  background: #7878ff;
+}
+
+.login-7 .btn-primary:hover {
+  color: #7878ff;
+  border: 2px solid #7878ff;
+}
+
+.login-7 .social-list a {
+  font-size: 18px;
+  margin-right: 15px;
+  color: #535353;
+}
+
+.login-7 .social-list a:hover {
+  color: #7878ff;
+}
+
+@media (max-width: 992px) {
+  .login-7-inner:before {
+      background: none;
+  }
+  .login-7 .form-section {
+      padding: 120px 34px 40px;
+      border-radius: 10px 0 0 10px;
+  }
+  .login-7 .logo {
+      top: 40px;
+      left: 30px;
+  }
+  .login-7 .btn-section {
+      top: 40px;
+      right: 15px;
+  }
+  .login-7-bodycolor .ripple-background {
+      display: none;
+  }
+}
+
+.float-end{
+float: right;
+}
+
+.error-text{
+  color: #d32f2f;
+}
+
+.css-hip9hq-MuiPaper-root-MuiAppBar-root{
+  background-color: #9143f9!important;
+}
+
+
+.css-1oukqxz-MuiGrid-root {
+  background-color: #23067a;
+  color: white;
+}
+.css-kz9dsu-MuiTypography-root{
+  color: white !important;
+}
+
+
+
+
+.css-1oqqzyl-MuiContainer-root{
+  background-color: #23067a;
+  margin: 0px;
+  max-width: 100% !important;
+}
+
+.css-1fu7jd5-MuiButtonBase-root-MuiButton-root{
+  color: #fff !important;
+  background: #7878ff !important;
+  border: 1px solid #7878ff !important;
+  box-shadow:none !important;
+}
+
+.login-7-inner1 {
+  position: relative;
+  min-height: 100vh;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 30px 0;
+}
+
+
+.bgPrimary {
+  background-image: linear-gradient(to bottom, #9143f9, #23067a);
+}
+
+.px5 {
+  padding-right: 3rem;
+  padding-left: 3rem;
+}
+
+.mt5 {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.textWhite {
+  color: #fff;
+}
+
+.textWarning {
+  color: #3c067abe;
+}
+
+.textWhite50 {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.btnLight {
+  color: #9143f9 !important;
+  background-color: #f8f9fa !important;
+  border-color: #f8f9fa !important;
+}
+
+.btnLight1{
+  color: white !important;
+  border-color: #f8f9fa !important;
+}
+.css-13d1bx2-MuiGrid-root{
+  margin-top: 0px !important;
+}
+
+
+.css-1s324r5-MuiGrid-root{
+  margin-top: 10px !important;
+}
+.css-sghohy-MuiButtonBase-root-MuiButton-root{
+  margin: 20px !important;
+}
+.css-6exuqi-MuiTypography-root{
+  font-size: calc(1.425rem + 2.1vw) !important;
+  font-weight: bolder !important;
+}
+
