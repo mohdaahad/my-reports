@@ -380,34 +380,15 @@ float: right;
   color: #d32f2f;
 }
 
-.css-hip9hq-MuiPaper-root-MuiAppBar-root{
-  background-color: #9143f9!important;
-}
-
-
-.css-1oukqxz-MuiGrid-root {
-  background-color: #23067a;
-  color: white;
-}
-.css-kz9dsu-MuiTypography-root{
-  color: white !important;
-}
 
 
 
-
-.css-1oqqzyl-MuiContainer-root{
-  background-color: #23067a;
-  margin: 0px;
-  max-width: 100% !important;
-}
-
-.css-1fu7jd5-MuiButtonBase-root-MuiButton-root{
+.button{
   color: #fff !important;
   background: #7878ff !important;
   border: 1px solid #7878ff !important;
   box-shadow:none !important;
-}
+} 
 
 .login-7-inner1 {
   position: relative;
@@ -457,19 +438,5 @@ float: right;
   color: white !important;
   border-color: #f8f9fa !important;
 }
-.css-13d1bx2-MuiGrid-root{
-  margin-top: 0px !important;
-}
 
-
-.css-1s324r5-MuiGrid-root{
-  margin-top: 10px !important;
-}
-.css-sghohy-MuiButtonBase-root-MuiButton-root{
-  margin: 20px !important;
-}
-.css-6exuqi-MuiTypography-root{
-  font-size: calc(1.425rem + 2.1vw) !important;
-  font-weight: bolder !important;
-}
 

@@ -5,7 +5,7 @@ import im from '../../assets/images/logos/logo-2.png';
 import FormInput from '../../components/common/FormInput';
 import SuccessMessage from '../../components/common/SuccessMessage';
 import ReCAPTCHA from 'react-google-recaptcha';
-
+import authService from '../../services/auth/authService';
 const ForgotPassword = () => {
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
@@ -23,7 +23,7 @@ const ForgotPassword = () => {
         setSuccessMessage('');
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async  (event) => {
         event.preventDefault();
         // Validate form data
         const newErrors = {};
@@ -40,14 +40,21 @@ const ForgotPassword = () => {
         if (Object.keys(newErrors).length > 0) {
             return;
         }
-        // Submit the form (you can handle this part according to your application's logic)
-        // For demonstration purposes, let's show a success message
-        setSuccessMessage('Password reset instructions sent to your email.');
-        // Reset form data
-        setFormData({ email: '' });
-        // Reset captcha
-        captchaRef.current.reset();
-        navigate('/verify-otp');
+        try {
+            // Call email verification
+            await authService.verifyEmail(formData.email);
+            // Show success message
+            setSuccessMessage('Password reset instructions sent to your email.');
+            // Reset form data
+            setFormData({ email: '' });
+            // Reset captcha
+            captchaRef.current.reset();
+            // Navigate to verify OTP page
+            navigate('/verify-otp', { state: { email: formData.email } });
+
+        } catch (error) {
+            setErrors({ email: error.message });
+        }
     };
 
     return (
@@ -84,7 +91,7 @@ const ForgotPassword = () => {
                                     {errors.captcha && <span style={{ color: '#d32f2f' }}>{errors.captcha}</span>}
                                     <ReCAPTCHA sitekey={process.env.REACT_APP_SITE_KEY} ref={captchaRef} />
                                     {successMessage && <SuccessMessage message={successMessage} />}
-                                    <Button type="submit" variant="contained" className='link-btn active btn-1 active-bg default-bg' fullWidth>Reset Password</Button>
+                                    <Button type="submit" variant="contained" className='button link-btn active btn-1 active-bg default-bg' fullWidth>Reset Password</Button>
                                 </form>
                             </div>
                         </div>

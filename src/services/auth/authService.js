@@ -4,10 +4,10 @@ import api from '../api';
 const authService = {
   login: async (formData) => {
     try {
-      const response = await axios.post(`${api.baseUrl}/account/login/`, formData);
-      localStorage.clear();
-      localStorage.setItem('access_token', response.data.access);
-      localStorage.setItem('refresh_token', response.data.refresh);
+      const response = await axios.post(`${api.baseUrl}/account/user-login/`, formData);
+      window.sessionStorage.clear();
+      window.sessionStorage.setItem('access_token', response.data.access);
+      window.sessionStorage.setItem('refresh_token', response.data.refresh);
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
       return response.data;
     } catch (error) {
@@ -17,7 +17,7 @@ const authService = {
 
   register: async (userData) => {
     try {
-      const response = await axios.post(`${api.baseUrl}/account/register/`, userData);
+      const response = await axios.post(`${api.baseUrl}/account/user-register/`, userData);
       return response.data;
     } catch (error) {
       throw error.response.data;
@@ -25,10 +25,10 @@ const authService = {
   },
 
   refreshToken: async () => {
-    const refreshToken = localStorage.getItem('refresh_token');
+    const refreshToken = window.sessionStorage.getItem('refresh_token');
     try {
       const response = await axios.post(`${api.baseUrl}/account/refresh/`, { refresh: refreshToken });
-      localStorage.setItem('access_token', response.data.access);
+      window.sessionStorage.setItem('access_token', response.data.access);
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
       return response.data;
     } catch (error) {
@@ -36,14 +36,64 @@ const authService = {
     }
   },
 
-  logout: () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    delete axios.defaults.headers.common['Authorization'];
+  
+  resetPassword: async (email) => {
+    try {
+      const response = await axios.post(`${api.baseUrl}/account/reset-password/`, { email });
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
   },
 
+
+  sendOTP: async (email) => {
+    try {
+      const response = await axios.post(`${api.baseUrl}/account/send-otp/`, { email });
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
+  verifyEmail: async (email) => {
+    try {
+      const response = await axios.post(`${api.baseUrl}/account/verify-email/`, { email });
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
+
+  verifyEmailOTP: async (email,otp) => {
+    try {
+      const response = await axios.post(`${api.baseUrl}/account/verify-email-otp/`, { email, otp });
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
+logout: async () => {
+        window.sessionStorage.removeItem('access_token');
+        window.sessionStorage.removeItem('refresh_token');
+        delete axios.defaults.headers.common['Authorization'];
+  // try {
+  //   // Make an API call to the logout endpoint if necessary
+  //   const response = await axios.post(`${api.baseUrl}/account/user-logout/`);
+  //   if (response.status === 200) {
+  //     window.sessionStorage.removeItem('access_token');
+  //     window.sessionStorage.removeItem('refresh_token');
+  //     delete axios.defaults.headers.common['Authorization'];
+  //     return true;
+  //   } else {
+  //     throw new Error('Logout failed');
+  //   }
+  // } catch (error) {
+  //   throw error.response ? error.response.data : error;
+  // }
+},
+
   isAuthenticated: () => {
-    const accessToken = localStorage.getItem('access_token');
+    const accessToken = window.sessionStorage.getItem('access_token');
     return !!accessToken;
   }
 

@@ -1,35 +1,40 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Grid, Button } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { Grid, Button, CircularProgress } from '@mui/material';
 import im from '../../assets/images/logos/logo-2.png';
 import '../../App.css';
 import FormInput from '../../components/common/FormInput';
 import SuccessMessage from '../../components/common/SuccessMessage';
 import FormCheckbox from '../../components/common/FormCheckbox';
 import WrongPasswordMessage from '../../components/common/WrongPasswordMessage';
-import authService from '../../services/auth/authService';
-import FormPasswordInput from '../../components/common/FormPasswordInput'; // Import FormPasswordInput component
+import { login } from '../../redux/actions/authActions';
+import { useSelector, useDispatch } from 'react-redux';
+import FormPasswordInput from '../../components/common/FormPasswordInput';
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',  
         password: '',
         rememberMe: false,
     });
-
+    const dispatch = useDispatch();
+    const { isAuthenticated} = useSelector((state) => state.auth);
+    const navigate = useNavigate();
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [wrongPassword, setWrongPassword] = useState(false);
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    React.useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/');
+        }
+    }, [isAuthenticated, navigate]);
     const handleChange = (event) => {
         const { name, value, checked } = event.target;
         setFormData({ ...formData, [name]: name === 'rememberMe' ? checked : value });
-        // Clear specific errors
         setErrors({ ...errors, [name]: '' });
-        // Hide wrong password message when user starts typing again
         setWrongPassword(false);
-        // Hide success message when user starts typing again
         setSuccessMessage('');
     };
 
@@ -39,30 +44,38 @@ const LoginPage = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // Validate form data
+        setIsSubmitting(true);
+
         const newErrors = {};
-        if (!formData.username.trim()) {
-            newErrors.username = 'Username is required';
+        if (!formData.email.trim()) {  
+            newErrors.email = 'Email is required';  
         }
         if (!formData.password.trim()) {
             newErrors.password = 'Password is required';
         }
-        // Set errors
+
         setErrors(newErrors);
-        // If there are errors, prevent form submission
+
         if (Object.keys(newErrors).length > 0) {
+            setIsSubmitting(false);
             return;
         }
 
         try {
-            const data = await authService.login(formData); // Call the login function from authService with username
+            await dispatch(login({
+                email: formData.email,
+                password: formData.password,
+                rememberMe: formData.rememberMe,
+            }));
             setSuccessMessage("Form submitted successfully!");
-            console.log('Login successful:', data);
-            // Redirect or perform any necessary action upon successful login
+            // console.log('Login successful:', data);
+            navigate("/")
         } catch (error) {
-            setWrongPassword("Incorrect username or password. Please try again.");
+            setWrongPassword("Incorrect email or password. Please try again.");  
             setFormData({ ...formData, password: '' });
             console.error('Login failed:', error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -89,17 +102,17 @@ const LoginPage = () => {
                                 <div className="clearfix"></div>
                                 <form onSubmit={handleSubmit}>
                                     <FormInput
-                                        label="Username"
-                                        type="text"
-                                        name="username"
-                                        value={formData.username}
+                                        label="Email"
+                                        type="email" 
+                                        name="email" 
+                                        value={formData.email} 
                                         onChange={handleChange}
                                         fullWidth
                                         margin="normal"
-                                        error={errors.username}
-                                        helperText={errors.username}
+                                        error={errors.email}  
+                                        helperText={errors.email} 
                                     />
-                                    <FormPasswordInput // Replace OutlinedInput with FormPasswordInput
+                                    <FormPasswordInput
                                         label="Password"
                                         name="password"
                                         value={formData.password}
@@ -126,7 +139,15 @@ const LoginPage = () => {
                                     </Grid>
                                     {successMessage && <SuccessMessage message={successMessage} />}
                                     {wrongPassword && <WrongPasswordMessage message={wrongPassword} />}
-                                    <Button type="submit" variant="contained" className='link-btn active btn-1 active-bg default-bg' fullWidth>Sign In</Button>
+                                    <Button 
+                                        type="submit" 
+                                        variant="contained" 
+                                        className='button link-btn active btn-1 active-bg default-bg' 
+                                        fullWidth
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? <CircularProgress  size={24} style={{'color': 'white'}} /> : 'Sign In'}
+                                    </Button>
                                 </form>
                             </div>
                         </div>

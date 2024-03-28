@@ -41,3 +41,63 @@ Start the development server:
 
 ```bash
 npm start
+
+
+
+src\
+|-- actions\
+|   |-- authActions.js
+|   |-- userActions.js
+|
+|-- assets\
+|   |-- images\
+|   |   |-- logos\
+|   |   |   |-- logo-2.png
+|   |   |-- i.jpg
+|   |   |-- img-7.jpg
+|
+|-- components\
+|   |-- common\
+|   |   |-- FormCheckbox.jsx
+|   |   |-- FormInput.jsx
+|   |   |-- FormPasswordInput.jsx
+|   |   |-- SuccessMessage.jsx
+|   |   |-- WrongPasswordMessage.jsx
+|   |
+|   |-- layout\
+|       |-- Footer.jsx
+|       |-- Navbar.jsx
+|
+|-- pages\
+|   |-- auth\
+|   |   |-- ForgotPassword.jsx
+|   |   |-- Login.jsx
+|   |   |-- OTPVerification.jsx
+|   |   |-- PasswordReset.jsx
+|   |   |-- Signup.jsx
+|   |
+|   |-- Home.jsx
+|
+|-- reducers\
+|   |-- authReducer.js
+|   |-- index.js
+|   |-- userReducer.js
+|
+|-- services\
+|   |-- auth\
+|   |   |-- authService.js
+|   |   |-- userService.js
+|   |
+|   |-- interceptors\
+|       |-- axios.js
+|
+|-- App.css
+|-- App.js
+|-- App.test.js
+|-- index.css
+|-- index.js
+|-- logo.svg
+|-- reportWebVitals.js
+|-- Routes.js
+|-- setupTests.js
+|-- store.js

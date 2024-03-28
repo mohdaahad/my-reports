@@ -5,9 +5,14 @@ import { Button,Typography,Stack } from '@mui/material';
 import FormInput from '../../components/common/FormInput';
 import SuccessMessage from '../../components/common/SuccessMessage';
 import im from '../../assets/images/logos/logo-2.png';
+import authService from '../../services/auth/authService';
+import { useLocation } from 'react-router-dom';
 const OTPVerification = () => {
     const navigate = useNavigate()
+    const location = useLocation();
+    const emailFromState = location.state?.email || '';
     const [formData, setFormData] = useState({
+        email: emailFromState,
         otp: '',
     });
 
@@ -15,13 +20,7 @@ const OTPVerification = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [remainingTime, setRemainingTime] = useState(60);
     const [resendDisabled, setResendDisabled] = useState(false);
-    // const OTPVerification  = (event) => {
-    //     const { name, value } = event.target;
-    //     setFormData({ ...formData, [name]: value });
-    //     setErrors({ ...errors, [name]: '' });
-    //     setSuccessMessage('');
-    // };
-
+   
     useEffect(() => {
         const timer = setTimeout(() => {
             if (remainingTime > 0) {
@@ -29,7 +28,7 @@ const OTPVerification = () => {
             } else {
                 setResendDisabled(false);
             }
-        }, 1000);
+        }, 100000);
 
         return () => clearTimeout(timer);
     }, [remainingTime]); 
@@ -40,31 +39,32 @@ const OTPVerification = () => {
         setErrors({ ...errors, [name]: '' });
         setSuccessMessage('');
     };
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Validate form data
-        const newErrors = {};
-        if (!formData.otp.trim()) {
-            newErrors.otp = 'OTP is required';
+        
+        const { email, otp } = formData;
+        try {
+             await authService.verifyEmailOTP(email, otp);
+            
+            setSuccessMessage('OTP verified successfully.');
+            setFormData({ otp: '' });
+            navigate('/reset-password');
+        } catch (error) {
+            setErrors({ otp: error.response?.data?.message || 'Failed to verify OTP.' });
         }
-        // Set errors
-        setErrors(newErrors);
-        // If there are errors, prevent form submission
-        if (Object.keys(newErrors).length > 0) {
-            return;
+    };
+    const handleResendOTP = async () => {
+        try {
+            await authService.sendOTP();
+            
+            setResendDisabled(true);
+            setRemainingTime(60); // Reset the timer
+        } catch (error) {
+            // Handle error
+            console.error('Failed to resend OTP:', error);
         }
-        // Submit the form (you can handle this part according to your application's logic)
-        // For demonstration purposes, let's show a success message
-        setSuccessMessage('OTP verified successfully.');
-        // Reset form data
-        setFormData({ otp: '' });
-        navigate('/reset-password');
     };
-    const handleResendOTP = () => {
-        // Logic to resend OTP
-        setResendDisabled(true);
-        setRemainingTime(60); // Reset the timer
-    };
+
 
     return (
         <div id="top" className="login-7-bg">
@@ -100,7 +100,7 @@ const OTPVerification = () => {
                                     {successMessage && <SuccessMessage message={successMessage} />}
                                   
                                     <Stack  spacing={2} direction="row">
-                                    <Button type="submit" variant="contained" className='link-btn active btn-1 active-bg default-bg' fullWidth>
+                                    <Button type="submit" variant="contained" className='link-btn button active btn-1 active-bg default-bg' fullWidth>
                                         Verify OTP
                                     </Button>
                                     <Button
@@ -108,7 +108,7 @@ const OTPVerification = () => {
                                         disabled={resendDisabled}
     
                                         onClick={handleResendOTP}
-                                       
+                                       className='button'
                                         fullWidth
                                     >
                                         Resend OTP

@@ -7,7 +7,7 @@ axios.interceptors.response.use(
   async (error) => {
     if (error.response.status === 401 && !refresh) {
       refresh = true;
-      const refreshToken = localStorage.getItem("refresh_token");
+      const refreshToken = sessionStorage.getItem("refresh_token");
       if (!refreshToken) {
         // Handle the case where refresh token is missing or expired
         return Promise.reject(error);
@@ -22,8 +22,8 @@ axios.interceptors.response.use(
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data["access"]}`;
-          localStorage.setItem("access_token", response.data.access);
-          localStorage.setItem("refresh_token", response.data.refresh);
+          sessionStorage.setItem("access_token", response.data.access);
+          sessionStorage.setItem("refresh_token", response.data.refresh);
           // Retry the original request after token refresh
           return axios(error.config);
         } else {

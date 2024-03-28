@@ -94,7 +94,7 @@ const PasswordReset = () => {
                                         helperText={errors.confirmPassword}
                                     />
                                     {successMessage && <SuccessMessage message={successMessage} />}
-                                    <Button type="submit" variant="contained" className="link-btn btn-1 active-bg default-bg" fullWidth>Reset Password</Button>
+                                    <Button type="submit" variant="contained" className="link-btn button btn-1 active-bg default-bg" fullWidth>Reset Password</Button>
                                 </form>
                             </div>
                         </div>

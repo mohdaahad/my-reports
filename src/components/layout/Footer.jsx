@@ -4,10 +4,11 @@ import { Facebook, Twitter, Instagram } from '@mui/icons-material';
 
 const Footer = () => {
     return (
-            <Container>
+            <Container style={{ backgroundColor: '#23067a', color: 'white', margin: '0px', maxWidth: '100%' }}
+            >
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
-                        <Typography variant="body2" color="textSecondary" align="left">
+                        <Typography variant="body2"  align="left">
                             © {new Date().getFullYear()} Nereus. All rights reserved.
                         </Typography>
                     </Grid>
