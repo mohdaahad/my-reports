@@ -1,67 +1,43 @@
-import React, { useState,useRef} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import im from '../../assets/images/logos/logo-2.png';
 import FormInput from '../../components/common/FormInput';
 import SuccessMessage from '../../components/common/SuccessMessage';
 import ReCAPTCHA from 'react-google-recaptcha';
-import authService from '../../services/auth/authService';
+import { useDispatch, useSelector } from 'react-redux';
+import WrongPasswordMessage from '../../components/common/WrongPasswordMessage';
+import { resetPassword } from '../../redux/actions/authActions';
+
 const ForgotPassword = () => {
-    const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const error = useSelector(state => state.auth.error);
+
     const [formData, setFormData] = useState({
         email: '',
     });
-
-    const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
-    const captchaRef  = useRef(null);
+    const captchaRef = useRef(null);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
-        setErrors({ ...errors, [name]: '' });
         setSuccessMessage('');
     };
 
-    const handleSubmit = async  (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Validate form data
-        const newErrors = {};
-        if (!formData.email.trim()) {
-            newErrors.email = 'Email is required';
-        }
-        // Validate captcha
-        if (!captchaRef.current.getValue()) {
-            newErrors.captcha = 'Please complete the captcha';
-        }
-        // Set errors
-        setErrors(newErrors);
-        // If there are errors, prevent form submission
-        if (Object.keys(newErrors).length > 0) {
-            return;
-        }
-        try {
-            // Call email verification
-            await authService.verifyEmail(formData.email);
-            // Show success message
-            setSuccessMessage('Password reset instructions sent to your email.');
-            // Reset form data
-            setFormData({ email: '' });
-            // Reset captcha
-            captchaRef.current.reset();
-            // Navigate to verify OTP page
-            navigate('/verify-otp', { state: { email: formData.email } });
-
-        } catch (error) {
-            setErrors({ email: error.message });
-        }
+        // Dispatch action to verify email
+        dispatch(resetPassword(formData.email));
+        setSuccessMessage('Please check your email for the reset password link.');
     };
 
+    
     return (
         <div id="top" className="login-7-bg">
-        <div className="login-7">
-            <div className="login-7-inner">
-            <div className="form-info">
+            <div className="login-7">
+                <div className="login-7-inner">
+                    <div className="form-info">
                         <div className="form-section align-self-center">
                             <div className="btn-section clearfix">
                                 <Link to="/sign-in" className="link-btn btn-1 default-bg">Login</Link>
@@ -85,12 +61,11 @@ const ForgotPassword = () => {
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        error={errors.email}
-                                        helperText={errors.email}
                                     />
-                                    {errors.captcha && <span style={{ color: '#d32f2f' }}>{errors.captcha}</span>}
+                                    
                                     <ReCAPTCHA sitekey={process.env.REACT_APP_SITE_KEY} ref={captchaRef} />
                                     {successMessage && <SuccessMessage message={successMessage} />}
+                                    {error && <WrongPasswordMessage message={error} />}
                                     <Button type="submit" variant="contained" className='button link-btn active btn-1 active-bg default-bg' fullWidth>Reset Password</Button>
                                 </form>
                             </div>

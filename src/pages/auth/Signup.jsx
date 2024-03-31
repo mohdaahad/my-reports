@@ -12,13 +12,15 @@ import '../../App.css';
 import FormInput from '../../components/common/FormInput';
 import FormPasswordInput from '../../components/common/FormPasswordInput';
 import SuccessMessage from '../../components/common/SuccessMessage';
+import WrongPasswordMessage from '../../components/common/WrongPasswordMessage';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useDispatch } from 'react-redux';
-import { register } from '../../redux/actions/authActions';
+import { verifyEmail } from '../../redux/actions/authActions';
 
 const SignupPage = () => {
     const [accountType, setAccountType] = useState('Individual');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         accountType,
         email: '',
@@ -30,7 +32,6 @@ const SignupPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const captchaRef = useRef(null);
-    const dispatch = useDispatch();
 
     const handleAccountTypeChange = (event) => {
         setAccountType(event.target.value);
@@ -78,8 +79,8 @@ const SignupPage = () => {
             if (!captchaValue) {
                 throw new Error('Please complete the CAPTCHA');
             }
-            dispatch(register(formData));
-            navigate('/')
+            await dispatch(verifyEmail(formData.email));
+            navigate('/verify-otp',{ state: { formData } } );
         } catch (error) {
             console.error('Registration failed:', error);
             setErrors(error);
@@ -172,9 +173,8 @@ const SignupPage = () => {
                                         showPassword={showPassword}
                                         handleShowPassword={handleShowPassword}
                                     />
-                                    {errors.captcha && <p style={{ color: '#d32f2f' }}>{errors.captcha}</p>}
-
                                     {successMessage && <SuccessMessage message={successMessage} />}
+                                    {errors.captcha && <WrongPasswordMessage message={errors.captcha} />}
                                     <ReCAPTCHA sitekey={process.env.REACT_APP_SITE_KEY} ref={captchaRef} />
                                     <Button type="submit" variant="contained" className='link-btn button active btn-1 active-bg default-bg' fullWidth>Register</Button>
 

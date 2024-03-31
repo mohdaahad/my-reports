@@ -1,5 +1,5 @@
 const initialState = {
-  isAuthenticated: window.sessionStorage.getItem('access_token') ? true : false,
+  isAuthenticated: window.localStorage.getItem('access_token') ? true : false,
   accessToken: null,
   refreshToken: null,
   error: null,
@@ -47,6 +47,55 @@ const authReducer = (state = initialState, action) => {
       };
 
     case 'REGISTER_FAIL':
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case 'REFRESH_TOKEN_SUCCESS':
+      return {
+        ...state,
+        accessToken: action.payload.access,
+        error: null,
+      };
+
+    case 'REFRESH_TOKEN_FAIL':
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case 'RESET_PASSWORD_SUCCESS':
+      return {
+        ...state,
+        error: null,
+      };
+
+    case 'RESET_PASSWORD_FAIL':
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case 'VERIFY_EMAIL_SUCCESS':
+      return {
+        ...state,
+        error: null,
+      };
+
+    case 'VERIFY_EMAIL_FAIL':
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case 'VERIFY_EMAIL_OTP_SUCCESS':
+      return {
+        ...state,
+        error: null,
+      };
+
+    case 'VERIFY_EMAIL_OTP_FAIL':
       return {
         ...state,
         error: action.payload,

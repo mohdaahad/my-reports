@@ -68,10 +68,9 @@ const LoginPage = () => {
                 rememberMe: formData.rememberMe,
             }));
             setSuccessMessage("Form submitted successfully!");
-            // console.log('Login successful:', data);
             navigate("/")
         } catch (error) {
-            setWrongPassword("Incorrect email or password. Please try again.");  
+            setWrongPassword(error);  
             setFormData({ ...formData, password: '' });
             console.error('Login failed:', error);
         } finally {

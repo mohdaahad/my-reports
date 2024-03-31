@@ -1,103 +1,119 @@
-import axios from 'axios';
+import axios from '../interceptors/axios';
 import api from '../api';
 
 const authService = {
+  // Authenticate user and store tokens
   login: async (formData) => {
     try {
       const response = await axios.post(`${api.baseUrl}/account/user-login/`, formData);
-      window.sessionStorage.clear();
-      window.sessionStorage.setItem('access_token', response.data.access);
-      window.sessionStorage.setItem('refresh_token', response.data.refresh);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
+      authService.storeTokens(response.data);
       return response.data;
     } catch (error) {
-      throw error.response.data;
+      throw authService.handleAPIError(error);
     }
   },
 
+  // Register a new user
   register: async (userData) => {
     try {
       const response = await axios.post(`${api.baseUrl}/account/user-register/`, userData);
       return response.data;
     } catch (error) {
-      throw error.response.data;
+      throw authService.handleAPIError(error);
     }
   },
 
+  // Refresh access token
   refreshToken: async () => {
-    const refreshToken = window.sessionStorage.getItem('refresh_token');
     try {
+      const refreshToken = authService.getRefreshToken();
       const response = await axios.post(`${api.baseUrl}/account/refresh/`, { refresh: refreshToken });
-      window.sessionStorage.setItem('access_token', response.data.access);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
+      authService.storeAccessToken(response.data.access);
       return response.data;
     } catch (error) {
-      throw error.response.data;
+      throw authService.handleAPIError(error);
     }
   },
 
-  
+  // Initiate password reset
   resetPassword: async (email) => {
     try {
-      const response = await axios.post(`${api.baseUrl}/account/reset-password/`, { email });
+      const response = await axios.post(`${api.baseUrl}/account/reset-password-email/`, { email });
       return response.data;
     } catch (error) {
-      throw error.response.data;
+      throw authService.handleAPIError(error);
     }
   },
 
-
-  sendOTP: async (email) => {
-    try {
-      const response = await axios.post(`${api.baseUrl}/account/send-otp/`, { email });
-      return response.data;
-    } catch (error) {
-      throw error.response.data;
-    }
-  },
+  // Send email verification
   verifyEmail: async (email) => {
     try {
       const response = await axios.post(`${api.baseUrl}/account/verify-email/`, { email });
       return response.data;
     } catch (error) {
-      throw error.response.data;
+      throw authService.handleAPIError(error);
     }
   },
 
-  verifyEmailOTP: async (email,otp) => {
+  // Verify email OTP
+  verifyEmailOTP: async (email, email_otp) => {
     try {
-      const response = await axios.post(`${api.baseUrl}/account/verify-email-otp/`, { email, otp });
+      const response = await axios.post(`${api.baseUrl}/account/verify-email-otp/`, { email, email_otp });
       return response.data;
     } catch (error) {
-      throw error.response.data;
+      throw authService.handleAPIError(error);
     }
   },
-logout: async () => {
-        window.sessionStorage.removeItem('access_token');
-        window.sessionStorage.removeItem('refresh_token');
-        delete axios.defaults.headers.common['Authorization'];
-  // try {
-  //   // Make an API call to the logout endpoint if necessary
-  //   const response = await axios.post(`${api.baseUrl}/account/user-logout/`);
-  //   if (response.status === 200) {
-  //     window.sessionStorage.removeItem('access_token');
-  //     window.sessionStorage.removeItem('refresh_token');
-  //     delete axios.defaults.headers.common['Authorization'];
-  //     return true;
-  //   } else {
-  //     throw new Error('Logout failed');
-  //   }
-  // } catch (error) {
-  //   throw error.response ? error.response.data : error;
-  // }
-},
 
+  // Logout user
+  logout: async () => {
+    authService.clearTokens();
+  },
+
+  // Check if user is authenticated
   isAuthenticated: () => {
-    const accessToken = window.sessionStorage.getItem('access_token');
+    const accessToken = authService.getAccessToken();
     return !!accessToken;
-  }
+  },
 
-  // You can add other authentication-related methods as needed
+  // Store access and refresh tokens
+  storeTokens: (tokens) => {
+    window.localStorage.clear();
+    window.localStorage.setItem('access_token', tokens.access);
+    window.localStorage.setItem('refresh_token', tokens.refresh);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${tokens.access}`;
+  },
+
+  // Store access token
+  storeAccessToken: (accessToken) => {
+    window.localStorage.setItem('access_token', accessToken);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+  },
+
+  // Retrieve access token
+  getAccessToken: () => {
+    return window.localStorage.getItem('access_token');
+  },
+
+  // Retrieve refresh token
+  getRefreshToken: () => {
+    return window.localStorage.getItem('refresh_token');
+  },
+
+  // Clear tokens and logout
+  clearTokens: () => {
+    window.localStorage.clear();
+    delete axios.defaults.headers.common['Authorization'];
+  },
+
+  // Handle API errors
+  handleAPIError: (error) => {
+    if (error.response && error.response.data) {
+      throw error.response.data;
+    } else {
+      throw error;
+    }
+  }
 };
 
 export default authService;

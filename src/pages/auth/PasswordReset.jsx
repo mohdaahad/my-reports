@@ -5,8 +5,11 @@ import FormInput from '../../components/common/FormInput';
 import SuccessMessage from '../../components/common/SuccessMessage';
 import im from '../../assets/images/logos/logo-2.png';
 import FormPasswordInput from '../../components/common/FormPasswordInput';
-
+import { useDispatch } from 'react-redux'; // Import useDispatch
+import { resetPassword } from '../../redux/actions/authActions'; // Import the resetPassword action
+import WrongPasswordMessage from '../../components/common/WrongPasswordMessage';
 const PasswordReset = () => {
+    const dispatch = useDispatch(); // Initialize useDispatch
     const [formData, setFormData] = useState({
         newPassword: '',
         confirmPassword: '',
@@ -22,13 +25,11 @@ const PasswordReset = () => {
         setSuccessMessage('');
     };
 
- 
-
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const newErrors = {};
 
@@ -51,8 +52,18 @@ const PasswordReset = () => {
             return;
         }
 
-        setSuccessMessage('Password reset successfully.');
-        setFormData({ newPassword: '', confirmPassword: '' });
+        try {
+            // Dispatch the resetPassword action with form data
+            await dispatch(resetPassword({
+                newPassword: formData.newPassword,
+                confirmPassword: formData.confirmPassword,
+            }));
+            
+            setSuccessMessage('Password reset successfully.');
+            setFormData({ newPassword: '', confirmPassword: '' });
+        } catch (error) {
+            setErrors({ newPassword: error.response?.data?.message || 'Failed to reset password.' });
+        }
     };
 
     return (
@@ -94,6 +105,7 @@ const PasswordReset = () => {
                                         helperText={errors.confirmPassword}
                                     />
                                     {successMessage && <SuccessMessage message={successMessage} />}
+                                    {errors && <WrongPasswordMessage message={errors} />}
                                     <Button type="submit" variant="contained" className="link-btn button btn-1 active-bg default-bg" fullWidth>Reset Password</Button>
                                 </form>
                             </div>
